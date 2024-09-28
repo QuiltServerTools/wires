@@ -33,7 +33,7 @@ object VanishCommand {
             player.addStatusEffect(EFFECT_INSTANCE)
             player.getServer()!!.playerManager.sendToAll(
                 PlayerListS2CPacket(
-                    PlayerListS2CPacket.Action.REMOVE_PLAYER,
+                    PlayerListS2CPacket.Action.UPDATE_LISTED,
                     player
                 )
             )
@@ -68,7 +68,7 @@ object VanishCommand {
         val player = EntityArgumentType.getPlayer(ctx, "player")
         addOrRemove(player)
         ctx.source.sendFeedback(
-            Text.literal("${if (players.contains(player)) "Vanished" else "Unvanished"} ${player.name.string}"),
+            { Text.literal("${if (players.contains(player)) "Vanished" else "Unvanished"} ${player.name.string}") },
             true
         )
         return 1

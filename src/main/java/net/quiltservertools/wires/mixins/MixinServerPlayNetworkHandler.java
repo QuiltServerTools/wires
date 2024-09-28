@@ -1,5 +1,6 @@
 package net.quiltservertools.wires.mixins;
 
+import net.minecraft.network.DisconnectionInfo;
 import net.quiltservertools.wires.StaffChat;
 import net.quiltservertools.wires.command.MuteCommands;
 import net.quiltservertools.wires.command.VanishCommand;
@@ -33,7 +34,7 @@ public abstract class MixinServerPlayNetworkHandler {
     @Inject(method = "onChatMessage(Lnet/minecraft/network/packet/c2s/play/ChatMessageC2SPacket;)V", at = @At("HEAD"), cancellable = true)
     public void interceptChatMessage(ChatMessageC2SPacket packet, CallbackInfo ci) {
         Config config = Config.INSTANCE;
-        String message = packet.getChatMessage();
+        String message = packet.chatMessage();
         if (config.isPlayerMuted(player.getUuid()) && Permissions.INSTANCE.hasPermission(player.getCommandSource(), MuteCommands.name)) {
             player.sendMessage(muted);
             player.sendMessage(Text.literal("Reason: " + (config.getMute(player).isPresent() ? config.getMute(player).get().getReason() : "<None provided>")));
@@ -48,7 +49,7 @@ public abstract class MixinServerPlayNetworkHandler {
     }
 
     @Inject(method = "onDisconnected", at = @At("HEAD"))
-    public void removeFromVanish(Text reason, CallbackInfo ci) {
+    public void removeFromVanish(DisconnectionInfo info, CallbackInfo ci) {
         VanishCommand.INSTANCE.removePlayer(this.getPlayer());
     }
 }

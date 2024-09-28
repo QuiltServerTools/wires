@@ -1,5 +1,6 @@
 package net.quiltservertools.wires.mixins;
 
+import net.minecraft.server.network.ConnectedClientData;
 import net.quiltservertools.wires.command.VanishCommand;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.network.ClientConnection;
@@ -24,8 +25,8 @@ public class MixinPlayerManager {
             cir.setReturnValue(Text.literal("Server is closed for maintenance"));
         }
     }
-    @Inject(method = "onPlayerConnect(Lnet/minecraft/network/ClientConnection;Lnet/minecraft/server/network/ServerPlayerEntity;)V", at = @At("RETURN"))
-    public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity entity, CallbackInfo ci) {
-        VanishCommand.INSTANCE.getPlayers().forEach(player -> connection.send(new PlayerListS2CPacket(PlayerListS2CPacket.Action.REMOVE_PLAYER, player)));
+    @Inject(method = "onPlayerConnect", at = @At("RETURN"))
+    public void onPlayerConnect(ClientConnection connection, ServerPlayerEntity entity, ConnectedClientData clientData, CallbackInfo ci) {
+        VanishCommand.INSTANCE.getPlayers().forEach(player -> connection.send(new PlayerListS2CPacket(PlayerListS2CPacket.Action.UPDATE_LISTED, player)));
     }
 }

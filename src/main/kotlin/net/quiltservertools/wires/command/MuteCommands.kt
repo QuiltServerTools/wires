@@ -87,13 +87,13 @@ object MuteCommands {
         }
         Config.mute(profile, seconds, reason)
         scs.sendFeedback(
-            Text.literal("Muted ${profile.name} for${
+            { Text.literal("Muted ${profile.name} for${
                 if (seconds < 0) {
                     "ever"
                 } else {
                     " ${seconds - Instant.now().epochSecond} seconds"
                 }
-            }"),
+            }") },
             true
         )
         return 1
@@ -101,7 +101,7 @@ object MuteCommands {
     private fun unmutePlayer(scs: ServerCommandSource, profile: GameProfile): Int {
         Config.unmute(profile)
         scs.sendFeedback(
-            Text.literal("Unmuted ${profile.name}"),
+            { Text.literal("Unmuted ${profile.name}") },
             true
         )
         return 1
@@ -109,7 +109,7 @@ object MuteCommands {
 
     private fun serverMute(scs: ServerCommandSource, time: Long): Int {
         val serverMuteStatus: Boolean = Config.serverMute(time)
-        scs.sendFeedback(Text.literal("Server mute ${if (serverMuteStatus) "enabled" else "disabled"}"), true)
+        scs.sendFeedback({ Text.literal("Server mute ${if (serverMuteStatus) "enabled" else "disabled"}") }, true)
         return 1
     }
 }

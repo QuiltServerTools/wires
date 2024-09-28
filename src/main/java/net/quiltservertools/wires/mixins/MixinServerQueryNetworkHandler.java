@@ -27,7 +27,7 @@ public abstract class MixinServerQueryNetworkHandler {
                     metadata.players(),
                     Optional.of(new ServerMetadata.Version("Maintenance", -1)),
                     metadata.favicon(),
-                    false
+                    metadata.secureChatEnforced()
             );
         }
 

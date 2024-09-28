@@ -22,10 +22,10 @@ object StaffChatCommand {
             .executes { ctx: CommandContext<ServerCommandSource> ->
                 StaffChat.toggle(ctx.source.player!!.uuid)
                 ctx.source.sendFeedback(
-                    Text.literal(
+                    { Text.literal(
                         if (StaffChat.isInStaffChat(ctx.source.player!!.uuid)
                         ) "Moved to staff chat" else "Moved to game chat"
-                    ), false
+                    ) }, false
                 )
                 1
             }

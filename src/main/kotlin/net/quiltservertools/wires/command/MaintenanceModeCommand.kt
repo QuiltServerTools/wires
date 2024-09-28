@@ -9,6 +9,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.quiltservertools.wires.config.Config
 import net.quiltservertools.wires.util.Permissions.hasPermission
+import java.util.function.Supplier
 
 object MaintenanceModeCommand {
 
@@ -50,7 +51,7 @@ object MaintenanceModeCommand {
             }
         }
         scs.sendFeedback(
-            Text.literal("Maintenance mode ").append(Text.literal(if (state) "enabled" else "disabled").formatted(if (state) Formatting.RED else Formatting.GREEN)),
+            { Text.literal("Maintenance mode ").append(Text.literal(if (state) "enabled" else "disabled").formatted(if (state) Formatting.RED else Formatting.GREEN)) },
             true
         )
         return 1
